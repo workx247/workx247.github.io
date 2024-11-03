@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.134.2">
+    <meta name="generator" content="Relearn 7.1.1">
+    <meta name="description" content="Warning Article still under construction
+How did I get here? Some 20 years ago, when I was an undergraduate (CS) student, I was pretty fond of theoretical computer science, but I also secretly joined fellow students in their math classes, which kind of pissed of my dad, but also lead me to pursue mathematics later (bachelors degree only…)
+During that time I usually earned some extra money as a tutor for both theoretical CS and also mathematics.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Diagonalization Argument :: MNP">
+    <meta name="twitter:description" content="Warning Article still under construction
+How did I get here? Some 20 years ago, when I was an undergraduate (CS) student, I was pretty fond of theoretical computer science, but I also secretly joined fellow students in their math classes, which kind of pissed of my dad, but also lead me to pursue mathematics later (bachelors degree only…)
+During that time I usually earned some extra money as a tutor for both theoretical CS and also mathematics.">
+    <meta property="og:url" content="http://localhost:1313/mathematics/diagonalization_argument/index.html">
+    <meta property="og:site_name" content="MNP">
+    <meta property="og:title" content="The Diagonalization Argument :: MNP">
+    <meta property="og:description" content="Warning Article still under construction
+How did I get here? Some 20 years ago, when I was an undergraduate (CS) student, I was pretty fond of theoretical computer science, but I also secretly joined fellow students in their math classes, which kind of pissed of my dad, but also lead me to pursue mathematics later (bachelors degree only…)
+During that time I usually earned some extra money as a tutor for both theoretical CS and also mathematics.">
+    <meta property="og:locale" content="en_us">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Mathematics">
+    <meta property="article:published_time" content="2024-11-03T12:31:44+01:00">
+    <meta property="article:modified_time" content="2024-11-03T12:31:44+01:00">
+    <meta itemprop="name" content="The Diagonalization Argument :: MNP">
+    <meta itemprop="description" content="Warning Article still under construction
+How did I get here? Some 20 years ago, when I was an undergraduate (CS) student, I was pretty fond of theoretical computer science, but I also secretly joined fellow students in their math classes, which kind of pissed of my dad, but also lead me to pursue mathematics later (bachelors degree only…)
+During that time I usually earned some extra money as a tutor for both theoretical CS and also mathematics.">
+    <meta itemprop="datePublished" content="2024-11-03T12:31:44+01:00">
+    <meta itemprop="dateModified" content="2024-11-03T12:31:44+01:00">
+    <meta itemprop="wordCount" content="959">
+    <title>The Diagonalization Argument :: MNP</title>
+    <link href="/css/fontawesome-all.min.css?1730650003" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fontawesome-all.min.css?1730650003" rel="stylesheet"></noscript>
+    <link href="/css/nucleus.css?1730650003" rel="stylesheet">
+    <link href="/css/auto-complete.css?1730650003" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1730650003" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar.min.css?1730650003" rel="stylesheet">
+    <link href="/css/fonts.css?1730650003" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fonts.css?1730650003" rel="stylesheet"></noscript>
+    <link href="/css/theme.css?1730650003" rel="stylesheet">
+    <link href="/css/theme-blue.css?1730650003" rel="stylesheet" id="R-variant-style">
+    <link href="/css/chroma-learn.css?1730650003" rel="stylesheet" id="R-variant-chroma-style">
+    <link href="/css/print.css?1730650003" rel="stylesheet" media="print">
+    <script src="/js/variant.js?1730650003"></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      // variant stuff
+      window.variants && variants.init( [ 'blue' ] );
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/mathematics/diagonalization_argument/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+            <div class="topbar-button topbar-button-toc" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="Table of Contents (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-list-alt"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#how-did-i-get-here">How did I get here?</a></li>
+    <li><a href="#tldr">TL;DR</a>
+      <ul>
+        <li><a href="#the-diagonal-argument">The Diagonal Argument</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-classic-examples-of-how-to-apply-the-diagonal-argument">The classic examples of how to apply the diagonal argument</a>
+      <ul>
+        <li><a href="#cantors-uncountability-proof-for-mathbbr_01">Cantors uncountability proof for </a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/index.html"><span itemprop="name">Mathematics and Programming</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/mathematics/index.html"><span itemprop="name">Mathematics</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">The Diagonalization Argument</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-prev" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/mathematics/index.html" title="Mathematics (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-next" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><span class="topbar-control"><i class="fa-fw fas fa-chevron-right"></i></span>
+            </div>
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable mathematics" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="the-diagonalization-argument">The Diagonalization Argument</h1>
+
+<div class="box notices cstyle warning">
+  <div class="box-label">
+    <i class="fa-fw fas fa-exclamation-triangle"></i> Warning
+  </div>
+  <div class="box-content">
+<p>Article still under construction</p>
+  </div>
+</div>
+<h2 id="how-did-i-get-here">How did I get here?</h2>
+<p>Some 20 years ago, when I was an undergraduate (CS) student, I was pretty
+fond of theoretical computer science, but I also secretly joined fellow
+students in their math classes, which kind of pissed of my dad, but
+also lead me to pursue mathematics later (bachelors degree only&hellip;)</p>
+<p>During that time I usually earned some extra money as a tutor for both
+theoretical CS and also mathematics.</p>
+<p>Back then I often observed that both students, but also teachers, struggled
+to explain the technique of the diagonal argument in a <strong>general sense</strong>.
+So, usually, most of the studends were able to grasp the individual applications
+of the technique, Cantors uncountability proof for \(\mathbb{R}_{[0,1]}\),
+or the power set theorem referring to \(|\mathcal{P}(S)| > |S|\) -
+or the halting problem - depending on the field of study of the
+respective student/teacher.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument" rel="external" target="_blank">Cantors diagonal arguemt for the uncoutability of \(\mathbb{R}_{[0,1]}\)</a>,</li>
+<li><a href="https://en.wikipedia.org/wiki/Cantor%27s_theorem" rel="external" target="_blank">Cantors theorem regarding the cardinality of power sets</a>,</li>
+<li><a href="https://en.wikipedia.org/wiki/Halting_problem" rel="external" target="_blank">The halting problem</a></li>
+</ul>
+<div class="box notices cstyle warning">
+  <div class="box-label">
+    <i class="fa-fw fas fa-exclamation-triangle"></i> Warning
+  </div>
+  <div class="box-content">
+<p>I don&rsquo;t take responsibility of any form, neither legally nor financially, for using or downloading any
+software, algorithms and thoughts mentioned in this article. I don&rsquo;t even claim correctness of fitness for a particular purpose.</p>
+  </div>
+</div>
+<h2 id="tldr">TL;DR</h2>
+<p>What I would like to show here on a more formal level, is what the <em>diagonal argument</em>
+actually is, and how to use it in its &lsquo;usual&rsquo;, or contrapositional form.</p>
+<h3 id="the-diagonal-argument">The Diagonal Argument</h3>
+<hr>
+<p>Given a function \(f: I \rightarrow S\), a function \(P: I \times S \rightarrow T \),
+which is more like a property, i.e. \(|T| \geq 2\) is the only necessary condition
+for \(P\). The following holds</p>
+<span class="math align-center">\begin{align}
+\exists s^* \in  S\ \forall i \in I: P(i, f(i)) \neq P(i, s^*) \implies f\ \text{is not surjective.}
+\end{align}</span>
+<hr>
+<p>It might look much more complicated than it actually is. If $f$ is surjective,
+then $S = f(I)$, and because of $s \in S$ some index
+$i^*$ would yield $f(i^*) = s^*$, thus $P(i^*, f(i^*)) = P(i^*, s^*)$.
+If you look at the diagonal argument like this, it is almost trivial.</p>
+<p>The equivalent, contrapositional form is:</p>
+<hr>
+<span class="math align-center">\begin{align}
+\text{If } f \text{ is surjective, then }\quad \not\exists s^* \in  S\ \forall i \in I: P(i, f(i)) \neq P(i, s). 
+\end{align}</span>
+<hr>
+<p>We could formally negate the implication (for all \(s^*\) exists
+an \(i\) sich that &hellip;) - but that is not the way the diagonal argument is
+usually applied.</p>
+<p>The two forms which I am aware of are:</p>
+<ol>
+<li>
+<p>The <em>direct form</em> - the goal is to prove that no surjective \(f\) exists.<br>
+You are able to construct that special element \(s^*\) which is not in the image of \(f\) by
+exploiting the inner structure of the set \(S\) and the property \(P\) -
+the P-in-equality usually provides the means to do so.</p>
+</li>
+<li>
+<p>The <em>contrapositional form</em> - the goal is to contradict some construction for
+\(s^*\):<br>
+You already know, by some theorem that a surjective \(f\) exists.
+A construction of \(s^*\) then involves several steps
+that are proven to be legitimate and one step which is, <strong>by assumption</strong> \(A\),
+legal/existent. By showing that
+\(\forall i \in I: P(i, f(i)) \neq P(i, s^*)\) for the constructed/hypthetical
+\(s^*\), you have contradicted \(f\) being surjective and thus proven the
+construction to be invalid, and thus assumption \(A\) to be wrong.</p>
+<ol>
+<li>The restriction that in the constructino of \(s^*\) only one assumption
+\(A\) is made is crucial. If several steps in the construction of \(s^*\)
+are questionable, your proven result is weak in the sense that your proof
+doesn&rsquo;t show anymore, precisely, which step in the construction fails.</li>
+</ol>
+</li>
+</ol>
+<p>Fun fact: As in any theorem we might use it to falsify any aspect if it by just making clear
+that every other aspect of our proof / construction is valid. It might
+be thinkable to use the diagonal argument to prove that \(|T| = 1\), but I can&rsquo;t
+think of an application like that. If you are aware of such an example,
+please let me know (but please give me some relevant citation, not an artificially
+one made up).</p>
+<h2 id="the-classic-examples-of-how-to-apply-the-diagonal-argument">The classic examples of how to apply the diagonal argument</h2>
+<h3 id="cantors-uncountability-proof-for-mathbbr_01">Cantors uncountability proof for \(\mathbb{R}_{[0,1]}\)</h3>
+<p>We want to prove that the set of real numbers in the interval \([0,1]\) is uncountable,
+that is any enumration of the real numbers in the interval \([0,1]\) is not surjective.</p>
+<p>Suppose we got an arbitrary surjective enumertion
+$f: \mathbb{N} \rightarrow [0,1]^N $</p>
+<p>For the reader, we relate to the symbols used in the diagonal theorem above:</p>
+<ul>
+<li>\(I \equiv \mathbb{N}\)</li>
+<li>\(S \equiv [0,1]^N\)</li>
+<li>\(T \equiv \{0,1\}\)</li>
+<li>We call the elements &ldquo;$r$&rdquo; instead of &ldquo;$s$&rdquo;, like $r \in [0,1]^N$.</li>
+<li>We will later explain why $[0,1]^N$ could be viewed as a subset of $\mathbb{R}_{[0,1]}$.</li>
+<li>If it is impossible to enumerate that subset, we have $|\mathbb{N}| < |[0,1]^N| \leq |\mathbb{R}_{[0,1]}|$. (**)</li>
+</ul>
+<p>The property \(P\) is defined by the i-th component of an element $r$.</p>
+<span class="math align-center">\begin{align}
+P(i, r) = r_i\begin{cases}
+1\\
+0
+\end{cases}
+\end{align}</span>
+<p>We see now, because $P$ is two-valued, we can always define a different i-th
+component for $r^*$ and thus construct a 0-1-sequence, i.e. $r^* \in [0,1]^N$,
+that differs from $P(i,f(i))$ for all indexes i.</p>
+<span class="math align-center">\begin{align}
+P(i,f(i)) = r_i = 1 :\iff r^*_i = 0\\
+P(i,f(i)) = r_i = 0 :\iff r^*_i = 1\\
+\end{align}</span>
+<p>The diagonal argument then yields that $f$ is not surjective,
+$f(\mathbb{N}) \subsetneq [0,1]^N$. Because $f$ was arbitrary, we have shown that
+$N < [0,1]^N \leq \mathbb{R}_{[0,1]}$</p>
+<p>While a continued fraction like $0,111111... = 1$ in binary, it is not
+in decimal representation. Viewing that sequence as a decimal representation
+(leaving aside all other digits from 2 to 9, we have an injective embedding
+of
+$[0,1]^N \rightarrow \mathbb{R}_{[0,1]}$ (thank you <a href="https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument#cite_note-12" rel="external" target="_blank">wikipedia</a>)
+which finally yields the second inequality $N < [0,1]^N \leq \mathbb{R}_{[0,1]}$,
+so $N < \mathbb{R}_{[0,1]}$ $\blacksquare$</p>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/index.html">
+MNP
+          </a>
+        </div>
+        <script>
+          window.index_js_url="/searchindex.en.js?1730650003";
+        </script>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+        <script>
+          var contentLangs=['en'];
+        </script>
+        <script src="/js/auto-complete.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.min.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.stemmer.support.min.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.multi.min.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.en.min.js?1730650003" defer></script>
+        <script src="/js/search.js?1730650003" defer></script>
+      </div>
+      <div id="R-homelinks" class="default-animation homelinks">
+        <ul>
+          <li><a class="padding" href="/index.html"><i class="fa-fw fas fa-home"></i> Home</a></li>
+        </ul>
+        <hr class="padding">
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div id="R-shortcutmenu-home" class="R-sidebarmenu">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/computer-science/index.html"><a class="padding" href="/computer-science/index.html">Computer Science</a><ul id="R-subsections-a9dc21014f3a8893cc3a06c31ec21575" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/mathematics/index.html"><a class="padding" href="/mathematics/index.html">Mathematics</a><ul id="R-subsections-8597eafc40eb66ef3fae9d833373311e" class="collapsible-menu">
+            <li class="active " data-nav-id="/mathematics/diagonalization_argument/index.html"><a class="padding" href="/mathematics/diagonalization_argument/index.html">The Diagonalization Argument</a></li></ul></li>
+          </ul>
+        </div>
+    
+        <div class="padding footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter"></div>
+        <div id="R-menu-footer">
+          <hr class="padding default-animation footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter">
+          <div id="R-prefooter" class="footerLangSwitch footerVariantSwitch footerVisitedLinks">
+            <ul>
+              <li id="R-select-language-container" class="footerLangSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-language"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-language">Language</label>
+                    <select id="R-select-language" onchange="location = this.querySelector( this.value ).dataset.url;">
+                      <option id="R-select-language-en" value="#R-select-language-en" data-url="/mathematics/diagonalization_argument/index.html" lang="en-us" selected></option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+              <li id="R-select-variant-container" class="footerVariantSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-paint-brush"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-variant">Theme</label>
+                    <select id="R-select-variant" onchange="window.variants && variants.changeVariant( this.value );">
+                      <option id="R-select-variant-blue" value="blue" selected>Blue</option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <script>window.variants && variants.markSelectedVariant();</script>
+              </li>
+              <li class="footerVisitedLinks">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-history"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <button onclick="clearHistory();">Clear History</button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="R-footer" class="footerFooter showFooter">
+        <p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <script src="/js/clipboard.min.js?1730650003" defer></script>
+    <script src="/js/perfect-scrollbar.min.js?1730650003" defer></script>
+    <script>
+      function useMathJax( config ){
+        window.MathJax = Object.assign( window.MathJax || {}, {
+          tex: {
+            inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+            displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+          },
+          options: {
+            enableMenu: false 
+          }
+        }, config );
+      }
+      useMathJax( JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1730650003"></script>
+    <script src="/js/theme.js?1730650003" defer></script>
+  </body>
+</html>

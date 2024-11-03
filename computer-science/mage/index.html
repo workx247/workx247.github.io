@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.134.2">
+    <meta name="generator" content="Relearn 7.1.1">
+    <meta name="description" content="About The Golang community is rather conservative, most smaller projects just get along with go build, some larger projects including Kubernetes, Prometheus, Terraform and Vault stick with the good old Makefile. But, that being said, a new player gets some attention, Mage and I would like to introduce it here and give some reasons why I like it. I
+also try to be fair and give some pros and cons for both Mage and Make tools, as I’m generally no fan of black-and-white pictures - but the article deals with Mage. What we show here is:">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Mage :: MNP">
+    <meta name="twitter:description" content="About The Golang community is rather conservative, most smaller projects just get along with go build, some larger projects including Kubernetes, Prometheus, Terraform and Vault stick with the good old Makefile. But, that being said, a new player gets some attention, Mage and I would like to introduce it here and give some reasons why I like it. I
+also try to be fair and give some pros and cons for both Mage and Make tools, as I’m generally no fan of black-and-white pictures - but the article deals with Mage. What we show here is:">
+    <meta property="og:url" content="http://localhost:1313/computer-science/mage/index.html">
+    <meta property="og:site_name" content="MNP">
+    <meta property="og:title" content="Mage :: MNP">
+    <meta property="og:description" content="About The Golang community is rather conservative, most smaller projects just get along with go build, some larger projects including Kubernetes, Prometheus, Terraform and Vault stick with the good old Makefile. But, that being said, a new player gets some attention, Mage and I would like to introduce it here and give some reasons why I like it. I
+also try to be fair and give some pros and cons for both Mage and Make tools, as I’m generally no fan of black-and-white pictures - but the article deals with Mage. What we show here is:">
+    <meta property="og:locale" content="en_us">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="Mage :: MNP">
+    <meta itemprop="description" content="About The Golang community is rather conservative, most smaller projects just get along with go build, some larger projects including Kubernetes, Prometheus, Terraform and Vault stick with the good old Makefile. But, that being said, a new player gets some attention, Mage and I would like to introduce it here and give some reasons why I like it. I
+also try to be fair and give some pros and cons for both Mage and Make tools, as I’m generally no fan of black-and-white pictures - but the article deals with Mage. What we show here is:">
+    <meta itemprop="datePublished" content="2024-10-22T10:56:25+02:00">
+    <meta itemprop="dateModified" content="2024-10-22T10:56:25+02:00">
+    <meta itemprop="wordCount" content="1057">
+    <title>Mage :: MNP</title>
+    <link href="/computer-science/mage/index.xml" rel="alternate" type="application/rss+xml" title="Mage :: MNP">
+    <link href="/css/fontawesome-all.min.css?1730650003" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fontawesome-all.min.css?1730650003" rel="stylesheet"></noscript>
+    <link href="/css/nucleus.css?1730650003" rel="stylesheet">
+    <link href="/css/auto-complete.css?1730650003" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1730650003" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar.min.css?1730650003" rel="stylesheet">
+    <link href="/css/fonts.css?1730650003" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fonts.css?1730650003" rel="stylesheet"></noscript>
+    <link href="/css/theme.css?1730650003" rel="stylesheet">
+    <link href="/css/theme-blue.css?1730650003" rel="stylesheet" id="R-variant-style">
+    <link href="/css/chroma-learn.css?1730650003" rel="stylesheet" id="R-variant-chroma-style">
+    <link href="/css/print.css?1730650003" rel="stylesheet" media="print">
+    <script src="/js/variant.js?1730650003"></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      // variant stuff
+      window.variants && variants.init( [ 'blue' ] );
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/computer-science/mage/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+            <div class="topbar-button topbar-button-toc" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="Table of Contents (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-list-alt"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#disclaimer">Disclaimer</a></li>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#walkthrough-example">Walkthrough Example</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#writing-our-first-magefile">Writing Our First Magefile</a></li>
+        <li><a href="#compiling-and-running-our-magefile">Compiling and Running Our Magefile</a></li>
+        <li><a href="#my-opinion-on-evil-binaries">My Opinion on Evil Binaries</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/index.html"><span itemprop="name">Mathematics and Programming</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/computer-science/index.html"><span itemprop="name">Computer Science</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">Mage</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-prev" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/computer-science/index.html" title="Computer Science (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-next" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/mathematics/index.html" title="Mathematics (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable computer-science" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="mage">Mage</h1>
+
+<h2 id="about">About</h2>
+<p>The Golang community is rather conservative, most smaller projects just get
+along with <code>go build</code>, some larger projects including Kubernetes, Prometheus,
+Terraform and Vault stick with the good old
+<a href="https://www.gnu.org/software/make/" rel="external" target="_blank">Makefile</a>.
+But, that being said, a new player gets some attention,
+<a href="https://magefile.org/" rel="external" target="_blank">Mage</a>
+and I would like to introduce it here and give some reasons why I like it. I<br>
+also try to be fair and give some pros and cons for both Mage and Make tools,
+as I&rsquo;m generally no fan of black-and-white pictures - but the article deals
+with Mage. What we show here is:</p>
+<ul>
+<li>Run minimal Mage example;
+<ul>
+<li>show how to install</li>
+<li>and run the necessary tools.</li>
+</ul>
+</li>
+<li>Debug that example using the delve debugger.</li>
+<li>Try to refute common arguments against executable, although I share some
+opinions here.</li>
+</ul>
+<h2 id="disclaimer">Disclaimer</h2>
+<div class="box notices cstyle warning">
+  <div class="box-label">
+    <i class="fa-fw fas fa-exclamation-triangle"></i> Warning
+  </div>
+  <div class="box-content">
+<p>I don&rsquo;t take responsibility of any form, neither legally nor financially, for using or downloading any
+software, algorithms and thoughts mentioned in this article. I don&rsquo;t even claim correctness of fitness for a particular purpose.</p>
+  </div>
+</div>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li><strong>GNU Make</strong>
+<ul>
+<li>Is a battle tested tool, e.g.:
+<ul>
+<li>the Linux kernel is built with it,</li>
+<li>it is still common today to use Make with C, C++, LaTeX and generally
+in the DevOps and scientific computing context.</li>
+</ul>
+</li>
+<li>Many people know how to use it; if a new member joins &rsquo;the team&rsquo;,
+chances are much higher her/him has heard of Make than of Mage.</li>
+<li>It comes with a lot of infrastructure in and around it:
+<ul>
+<li>Implicit rules specifically for the C language.</li>
+<li>The Autotools chain.</li>
+</ul>
+</li>
+<li>There is a lot of (inviting) freedom to use shell, perl etc. within the
+targets recipes, which could be cool, but also can turn out to be nuisance.</li>
+</ul>
+</li>
+<li>Mage
+<ul>
+<li>Although not as standard as Make, big projects such as <a href="https://github.com/gohugoio/hugo/" rel="external" target="_blank">Hugo</a> and
+<a href="https://github.com/elastic/beats/" rel="external" target="_blank">Beats</a> already adopted it.</li>
+<li>It is &rsquo;easy&rsquo; to debug a makefile, compared to Make
+(<a href="https://stackoverflow.com/questions/54753/tool-for-debugging-makefiles" rel="external" target="_blank">SO post &rsquo;tool for debugging makefiles&rsquo;</a>) -
+but that perception of &rsquo;easy&rsquo; might be subjective / just my view.</li>
+<li>The freedom to use any Bash-/Perl-/Linux-tool in a Make recipe imho comes at a cost. I prefer to have a typed programming
+language with compile time checks and a debugger at hand.
+<ul>
+<li>This is an advantage for Go programmers,</li>
+<li>and a minus for non-Go-programmers - the &lsquo;common&rsquo; Make recipe line relies on bash or sh, which are a very common tools.</li>
+<li>Imho the &lsquo;compile time checks&rsquo; need some extra mentioning: it is actually a whole toolchain we get for free;
+linters (SonarLint), pretty printers (go fmt), unit test etc.
+All of this is inherently difficult to achieve with the syntactic freedom of makefiles.</li>
+</ul>
+</li>
+<li>The idea to be able to generate a self-sufficient build executable without any dependencies appeals to me.
+I know the fraction of programmers who strictly refuse to check in any binaries into a repo,
+but with the aid of some signing and comparably small executables these are concerns which have,
+in my opinion, less impact today.
+<ul>
+<li>Outside of FOSS / inside companies, it is not that uncommon to even check-in whole compiler suites
+just with the goal in mind to have 100% binary reproducible builds and be completely independent of any changes
+happening in the www. Git LFS also lowers the performance cost of doing so.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>You might already feel that there are some philosophical aspects lingering around here - but I guess that is no surprise
+when diving into a debate that basically falls into the &lsquo;old-vs-new&rsquo; category;
+again - I&rsquo;m not arguing globally towards new tools per se, just trying to highlight what makes Mage appealing to me.</p>
+<h2 id="walkthrough-example">Walkthrough Example</h2>
+<p>In this article we would like to write a small &lsquo;magefile&rsquo;, compile and debug it - and ssh-sign the final executable.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>At first I have to confess that I don&rsquo;t know much about Windows - so this whole article was written using a
+Linux OS. I&rsquo;m not saying Windows is a bad thing, and I guess that whole procedure could be done on a Windows OS as well,
+but I don&rsquo;t own a Windows installation, and, although I have to use Windows at my job, this blog is entirely
+a spare-/fun-time-thing for me to do&hellip;</p>
+<p>I guess it is fully sufficient to <em>use your favourite linux package manager and install a newer version of Golang</em>.
+The official Golang <a href="https://go.dev/doc/install" rel="external" target="_blank">installation instructions</a> recommend removing stuf in /usr/local/go&hellip;
+that might be feasible, but I won&rsquo;t recommend removing anything in my blog.
+The version I used was (thank you Manjaro-Team and pacman):</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ go version
+</span></span><span style="display:flex;"><span>go version go1.23.1 linux/amd64</span></span></code></pre></div>
+<p>Please make sure that <code>~/go/bin</code> is part of your users PATH variable, because the tools we are about to install will reside there;
+You could use <code>mkdir -p ~/go/bin</code> and <code>echo 'export PATH=$PATH:~/go/bin' &gt;&gt; ~/.bashrc</code> to achieve that (probable also <code>source ~/.bashrc</code>).</p>
+<p>The following snippets are partly taken from <a href="https://magefile.org" rel="external" target="_blank">magefile.org</a>.
+We create a build directory for Mage, i.e. <code>~/mage</code>, and clone the official mage repo into it:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd <span style="color:#f92672">&amp;&amp;</span> pwd
+</span></span><span style="display:flex;"><span>/home/username
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ mkdir mage
+</span></span><span style="display:flex;"><span>$ cd mage
+</span></span><span style="display:flex;"><span>$ git clone https://github.com/magefile/mage .</span></span></code></pre></div>
+<p>The following will compile Mage and add a binary called &lsquo;mage&rsquo; into <code>~/go/bin</code></p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># inside ~/mage we run to compile and install the mage executable under ~/go/bin:</span>
+</span></span><span style="display:flex;"><span>$ go run bootstrap.go
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># because ~/go/bin/ is part of my PATH variable we can call mage directly:</span>
+</span></span><span style="display:flex;"><span>$ which mage
+</span></span><span style="display:flex;"><span>/home/username/go/bin/mage
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ mage --version <span style="color:#75715e"># your version build number might differ of course</span>
+</span></span><span style="display:flex;"><span>Mage Build Tool v1.15.0-5-g2385abb
+</span></span><span style="display:flex;"><span>Build Date: 2024-10-22T14:28:02+02:00
+</span></span><span style="display:flex;"><span>Commit: 2385abb
+</span></span><span style="display:flex;"><span>built with: go1.23.1</span></span></code></pre></div>
+<p>Later in this tutorial we will need the delve debugger - possibly also an IDE to squeeze the last drop of fanciness
+out of this article, but I&rsquo;ll keep that part optional.</p>
+<p>Taken from <a href="https://github.com/go-delve/delve/tree/master/Documentation/installation" rel="external" target="_blank">https://github.com/go-delve/delve/tree/master/Documentation/installation</a>:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd <span style="color:#f92672">&amp;&amp;</span> pwd
+</span></span><span style="display:flex;"><span>/home/username
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ mkdir delve <span style="color:#f92672">&amp;&amp;</span> cd delve
+</span></span><span style="display:flex;"><span>$ git clone https://github.com/go-delve/delve .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># we then run go install to compile and install the dlv executable under ~/go/bin:</span>
+</span></span><span style="display:flex;"><span>$ go install github.com/go-delve/delve/cmd/dlv
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ which dlv
+</span></span><span style="display:flex;"><span>/home/username/go/bin/dlv
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ dlv version <span style="color:#75715e"># your version build number might differ of course</span>
+</span></span><span style="display:flex;"><span>Delve Debugger
+</span></span><span style="display:flex;"><span>Version: 1.23.1
+</span></span><span style="display:flex;"><span>Build: $Id: 2eba762d75437d380e48fc42213853f13aa2904d </span></span></code></pre></div>
+<p>Now we are ready for&hellip;</p>
+<h3 id="writing-our-first-magefile">Writing Our First Magefile</h3>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd <span style="color:#f92672">&amp;&amp;</span> pwd
+</span></span><span style="display:flex;"><span>/home/username
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ mkdir hello-mage
+</span></span><span style="display:flex;"><span>$ cd hello-mage
+</span></span><span style="display:flex;"><span>$ go mod init hello-mage
+</span></span><span style="display:flex;"><span>$ touch magefile.go
+</span></span><span style="display:flex;"><span>$ ls -lh
+</span></span><span style="display:flex;"><span>total 8.0K
+</span></span><span style="display:flex;"><span>-rw-r--r-- <span style="color:#ae81ff">1</span> peterpan peterpan  <span style="color:#ae81ff">29</span> Oct <span style="color:#ae81ff">28</span> 13:22 go.mod
+</span></span><span style="display:flex;"><span>-rw-r--r-- <span style="color:#ae81ff">1</span> peterpan peterpan <span style="color:#ae81ff">574</span> Oct <span style="color:#ae81ff">22</span> 15:14 magefile.go</span></span></code></pre></div>
+<p>We then grab our favourite editor and fill magefile.go with some content:</p>
+<div class="highlight wrap-code" hl_lines=[['\x15' '\x15']] linenos="table" linenostart=%!q(float64=1)><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="background-color:#3c3d38"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//go:build mage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// +build mage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;github.com/magefile/mage/mg&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Task to list all files in the working dir, similar to &#39;ls&#39;:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ListFiles</span>() <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Get current working directory
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">dir</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getwd</span>()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Open the directory
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">files</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">ReadDir</span>(<span style="color:#a6e22e">dir</span>)
+</span></span><span style="display:flex; background-color:#3c3d38"><span>  <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Iterate over the files and directories
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">file</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">files</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">Name</span>())
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Main task - just to show how dependencies work:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">All</span>() <span style="color:#66d9ef">error</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">mg</span>.<span style="color:#a6e22e">Deps</span>(<span style="color:#a6e22e">ListFiles</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+<p>I already highlighted a line which we will soon set a breakpoint at.</p>
+<p>We can use the <code>go mod tidy</code> command of the go toolchain to automatically include the dependencies needed by our code into
+the go.mod and go.sum file:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># output may vary... </span>
+</span></span><span style="display:flex;"><span>$ go mod tidy
+</span></span><span style="display:flex;"><span>go: downloading github.com/magefile/mage v1.15.0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># which will alter the .mod file:</span>
+</span></span><span style="display:flex;"><span>$ cat go.mod 
+</span></span><span style="display:flex;"><span>module hello-mage
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>go 1.23.1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>require github.com/magefile/mage v1.15.0</span></span></code></pre></div>
+<h3 id="compiling-and-running-our-magefile">Compiling and Running Our Magefile</h3>
+<p>We can now run our magefile (i.e. the &lsquo;all&rsquo;-target):</p>
+<div class="highlight wrap-code"><pre tabindex="0"><code>$ mage all
+go.mod
+go.sum
+magefile.bin
+magefile.go</code></pre></div>
+<p>or compile our magefile.go - running the binary, magefile.bin, would yield the same effects
+as before:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mage -goos linux -goarch amd64 -compile magefile.bin
+</span></span><span style="display:flex;"><span>$ magefile.bin all
+</span></span><span style="display:flex;"><span>go.mod
+</span></span><span style="display:flex;"><span>go.sum
+</span></span><span style="display:flex;"><span>magefile.bin
+</span></span><span style="display:flex;"><span>magefile.go</span></span></code></pre></div>
+<p>The OS and ISA area not necessary, but I wanted to demonstrate that
+we are able to build a build executable for a variety of architectures,
+and, although a little optimistic, &ldquo;no one has to install anything else to
+run it&rdquo;.</p>
+<ul>
+<li>forcing mage to keep an intermediate file, mage_output_file.go, by using the <code>--keep</code> option:</li>
+</ul>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mage -keep
+</span></span><span style="display:flex;"><span>ls -1
+</span></span><span style="display:flex;"><span>go.mod
+</span></span><span style="display:flex;"><span>go.sum
+</span></span><span style="display:flex;"><span>magefile.go
+</span></span><span style="display:flex;"><span>mage_output_file.go
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># we can see that Mage is doing both; compiling our own functions from magefile.go,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># but also generating some wrapper code to build some infrastructure around it:</span>
+</span></span><span style="display:flex;"><span>grep -FC1 <span style="color:#e6db74">&#39;ListFiles(&#39;</span> mage_output_file.go 
+</span></span><span style="display:flex;"><span>	wrapFn :<span style="color:#f92672">=</span> func<span style="color:#f92672">(</span>ctx context.Context<span style="color:#f92672">)</span> error <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> ListFiles<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Also our documentation is put to some use by mage automatically, e.g.:</span>
+</span></span><span style="display:flex;"><span>grep -C1 <span style="color:#e6db74">&#34;&#39;ls&#39;&#34;</span> mage_output_file.go 
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>grep -C1 <span style="color:#e6db74">&#34;just to show&#34;</span> mage_output_file.go</span></span></code></pre></div>
+<p>Having a look at the intermediate mage_output_file.go is interesting, but I can&rsquo;t cover that in full detail here.
+When we want to understand why the &lsquo;usual&rsquo; debugger will help us, it is just important to keep in mind that Mage
+does two things:</p>
+<ul>
+<li>Generating a wrapper .go file then enriches the functionality we specified in our magefile.go</li>
+<li>But also that file will depend, in the sense of the Golang compiler, on our magefile.go - both mage_output_file.go and magefile.go
+will be used to compile the final build executable by the Golang compiler.</li>
+</ul>
+<p>We are then able to run the dlv debugger, running the intermediate mage_output_file.go, passing it an option to reference the
+original magefile.go, and also the build target - &lsquo;all&rsquo;. I found that searching through the github issues, so
+credits go to github/perj: <a href="https://github.com/magefile/mage/issues/280" rel="external" target="_blank">https://github.com/magefile/mage/issues/280</a></p>
+<p>Regarding the delve debugger - I&rsquo;m using basically just a few dlv commands, no need to rtfm the full delve documentation:</p>
+<ul>
+<li>list <!-- raw HTML omitted -->.<!-- raw HTML omitted -->
+<ul>
+<li>to see some context of the source I will be debugging</li>
+</ul>
+</li>
+<li>break <!-- raw HTML omitted -->:<!-- raw HTML omitted -->
+<ul>
+<li>to set a breakpoint at the line that gives me headaches</li>
+</ul>
+</li>
+<li>continue
+<ul>
+<li>to resume program execution</li>
+</ul>
+</li>
+<li>next
+<ul>
+<li>resume execution but stop at next line in current file</li>
+</ul>
+</li>
+<li>locals
+<ul>
+<li>to list local variables</li>
+</ul>
+</li>
+<li>print <!-- raw HTML omitted -->
+<ul>
+<li>to show the contents of a particular variale</li>
+</ul>
+</li>
+</ul>
+<div class="highlight wrap-code" hl_lines=[['\x00' '\x00'] ['1' '1']] linenostart=%!q(float64=1)><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;display:grid;"><code class="language-bash" data-lang="bash"><span style="display:flex; background-color:#3c3d38"><span>$ dlv debug --build-flags <span style="color:#e6db74">&#39;magefile.go&#39;</span> mage_output_file.go -- all
+</span></span><span style="display:flex;"><span>Type <span style="color:#e6db74">&#39;help&#39;</span> <span style="color:#66d9ef">for</span> list of commands.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> list main.All
+</span></span><span style="display:flex;"><span>Showing /home/username/hello-mage/magefile.go:35 <span style="color:#f92672">(</span>PC: 0x52a42e<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    30:	
+</span></span><span style="display:flex;"><span>    31:		<span style="color:#66d9ef">return</span> nil
+</span></span><span style="display:flex;"><span>    32:	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    33:	
+</span></span><span style="display:flex;"><span>    34:	// Main task that depends on both tasks
+</span></span><span style="display:flex;"><span>    35:	func All<span style="color:#f92672">()</span> error <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    36:		mg.Deps<span style="color:#f92672">(</span>ListFiles<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    37:		<span style="color:#66d9ef">return</span> nil
+</span></span><span style="display:flex;"><span>    38:	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>list main.ListFiles
+</span></span><span style="display:flex;"><span>Showing /home/username/hello-mage/magefile.go:13 <span style="color:#f92672">(</span>PC: 0x52a0b6<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>     8:		<span style="color:#e6db74">&#34;github.com/magefile/mage/mg&#34;</span>
+</span></span><span style="display:flex;"><span>     9:		<span style="color:#e6db74">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>    10:	<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    11:	
+</span></span><span style="display:flex;"><span>    12:	// Task to list all files using the <span style="color:#e6db74">`</span>ls<span style="color:#e6db74">`</span> shell command
+</span></span><span style="display:flex;"><span>    13:	func ListFiles<span style="color:#f92672">()</span> error <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    14:		// Get current working directory
+</span></span><span style="display:flex;"><span>    15:		dir, err :<span style="color:#f92672">=</span> os.Getwd<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>    16:		<span style="color:#66d9ef">if</span> err !<span style="color:#f92672">=</span> nil <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    17:			<span style="color:#66d9ef">return</span> err
+</span></span><span style="display:flex;"><span>    18:		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> break magefile.go:22
+</span></span><span style="display:flex;"><span>Breakpoint <span style="color:#ae81ff">1</span> set at 0x52a274 <span style="color:#66d9ef">for</span> main.ListFiles<span style="color:#f92672">()</span> ./magefile.go:22
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>&gt; <span style="color:#f92672">[</span>Breakpoint 1<span style="color:#f92672">]</span> main.ListFiles<span style="color:#f92672">()</span> ./magefile.go:22 <span style="color:#f92672">(</span>hits goroutine<span style="color:#f92672">(</span>17<span style="color:#f92672">)</span>:1 total:1<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>PC: 0x52a274<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    17:			<span style="color:#66d9ef">return</span> err
+</span></span><span style="display:flex;"><span>    18:		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    19:	
+</span></span><span style="display:flex;"><span>    20:		// Open the directory
+</span></span><span style="display:flex;"><span>    21:		files, err :<span style="color:#f92672">=</span> os.ReadDir<span style="color:#f92672">(</span>dir<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">=</span>&gt;  22:		<span style="color:#66d9ef">if</span> err !<span style="color:#f92672">=</span> nil <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    23:			<span style="color:#66d9ef">return</span> err
+</span></span><span style="display:flex;"><span>    24:		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    25:	
+</span></span><span style="display:flex;"><span>    26:		// Iterate over the files and directories
+</span></span><span style="display:flex;"><span>    27:		<span style="color:#66d9ef">for</span> _, file :<span style="color:#f92672">=</span> range files <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> locals
+</span></span><span style="display:flex;"><span>dir <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/home/username/hello-mage&#34;</span>
+</span></span><span style="display:flex;"><span>err <span style="color:#f92672">=</span> error nil
+</span></span><span style="display:flex;"><span>files <span style="color:#f92672">=</span> <span style="color:#f92672">[]</span>io/fs.DirEntry len: 5, cap: 8, <span style="color:#f92672">[</span>...<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> print files
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[]</span>io/fs.DirEntry len: 5, cap: 8, <span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>	*os.unixDirent <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		parent: <span style="color:#e6db74">&#34;/home/username/hello-mage&#34;</span>,
+</span></span><span style="display:flex; background-color:#3c3d38"><span>		name: <span style="color:#e6db74">&#34;__debug_bin1083018702&#34;</span>,
+</span></span><span style="display:flex;"><span>		typ: 0,
+</span></span><span style="display:flex;"><span>		info: io/fs.FileInfo nil,<span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>	*os.unixDirent <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		parent: <span style="color:#e6db74">&#34;/home/username/hello-mage&#34;</span>,
+</span></span><span style="display:flex;"><span>		name: <span style="color:#e6db74">&#34;go.mod&#34;</span>,
+</span></span><span style="display:flex;"><span>		typ: 0,
+</span></span><span style="display:flex;"><span>		info: io/fs.FileInfo nil,<span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>	*os.unixDirent <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		parent: <span style="color:#e6db74">&#34;/home/username/hello-mage&#34;</span>,
+</span></span><span style="display:flex;"><span>		name: <span style="color:#e6db74">&#34;go.sum&#34;</span>,
+</span></span><span style="display:flex;"><span>		typ: 0,
+</span></span><span style="display:flex;"><span>		info: io/fs.FileInfo nil,<span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>	*os.unixDirent <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		parent: <span style="color:#e6db74">&#34;/home/username/hello-mage&#34;</span>,
+</span></span><span style="display:flex;"><span>		name: <span style="color:#e6db74">&#34;mage_output_file.go&#34;</span>,
+</span></span><span style="display:flex;"><span>		typ: 0,
+</span></span><span style="display:flex;"><span>		info: io/fs.FileInfo nil,<span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span>	*os.unixDirent <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		parent: <span style="color:#e6db74">&#34;/home/username/hello-mage&#34;</span>,
+</span></span><span style="display:flex;"><span>		name: <span style="color:#e6db74">&#34;magefile.go&#34;</span>,
+</span></span><span style="display:flex;"><span>		typ: 0,
+</span></span><span style="display:flex;"><span>		info: io/fs.FileInfo nil,<span style="color:#f92672">}</span>,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>dlv<span style="color:#f92672">)</span> </span></span></code></pre></div>
+<p>In the last listing you might wonder about the file __debug_bin1083018702, which
+is a file that delve generates for debugging purposes - that file will also
+quickly disappear after the debugger terminates, and will thus not be
+visible shortly after the magefile run.</p>
+<p>In case you would further like to dive into the delve debugger, here are some links:</p>
+<ul>
+<li><a href="https://github.com/go-delve/delve/blob/master/Documentation/cli/README.md" rel="external" target="_blank">https://github.com/go-delve/delve/blob/master/Documentation/cli/README.md</a></li>
+<li><a href="https://golangforall.com/en/post/go-docker-delve-remote-debug.html" rel="external" target="_blank">https://golangforall.com/en/post/go-docker-delve-remote-debug.html</a></li>
+</ul>
+<p>I find that curiosity appealing, because, although the scenario is fairly
+exotic / off the tracks, it is the exact stuff that println-debugging
+in a usual makefile would not show us. <br>
+Before people start screaming, yes, I&rsquo;ve heard of:</p>
+<ul>
+<li><a href="https://github.com/Trepan-Debuggers/remake" rel="external" target="_blank">https://github.com/Trepan-Debuggers/remake</a>, <a href="https://remake.readthedocs.io/en/latest/" rel="external" target="_blank">https://remake.readthedocs.io/en/latest/</a></li>
+<li><a href="https://book.the-turing-way.org/reproducible-research/make/make-debugging.html" rel="external" target="_blank">https://book.the-turing-way.org/reproducible-research/make/make-debugging.html</a></li>
+</ul>
+<p>But then again, we are talking about entirely different beasts. remake has,
+status October 2024, some 800 stars on github, and Makes own debug mode is,
+in my opinion, not a real debugger.</p>
+<p>Whereas, using and IDE like GoLang or VSCode, we can use the whole suite,
+including a visual debugger, to track what is happening:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>dlv debug --build-flags <span style="color:#e6db74">&#39;magefile.go&#39;</span> --headless --listen<span style="color:#f92672">=</span>:8080 --api-version<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> --accept-multiclient mage_output_file.go -- all</span></span></code></pre></div>
+<p>IDE setup for remote debugging:
+<a href="#R-image-4e475236e23c2b63a27c06400ea0e7d1" class="lightbox-link"><img alt="IDE setup for remote debugging" class="noborder lazy lightbox noshadow figure-image" loading="lazy" src="/computer-science/mage/goland_debug_configuration.png" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4e475236e23c2b63a27c06400ea0e7d1"><img alt="IDE setup for remote debugging" class="noborder lazy lightbox noshadow lightbox-image" loading="lazy" src="/computer-science/mage/goland_debug_configuration.png"></a></p>
+<p><a href="#R-image-b286906f37a7966f62815f04cf29f75d" class="lightbox-link"><img alt="actual debugging session" class="noborder lazy lightbox noshadow figure-image" loading="lazy" src="/computer-science/mage/goland_debugging.png" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-b286906f37a7966f62815f04cf29f75d"><img alt="actual debugging session" class="noborder lazy lightbox noshadow lightbox-image" loading="lazy" src="/computer-science/mage/goland_debugging.png"></a></p>
+<h3 id="my-opinion-on-evil-binaries">My Opinion on Evil Binaries</h3>
+<p>Yes, it is better to have everything available as a source file, ideally
+standard build tools, agreed upon and available to everybody in the team.</p>
+<p>But then comes versioning, just to give 2 examples: Neither Gradle nor Maven
+are entirely stable when it comes to newer versions of that tools, or
+even versions of particular plugins. Upgrading either of them could break
+the build.</p>
+<p>Then, as mentioned earlier in this article: In a commercial environment it
+is not uncommon to check in complete compiler binaries into the repo, just to
+be sure everybody is able to get an exact binary reproducible build.</p>
+<p>Writing the whole build procedure in mage, building executables for
+Linux/Max/Windows, and signing them, is a nice way to have a self-sufficient
+build, and any other tool (hello, Jenkins) could call the targets
+with zero dependencies - at least that would be my dream.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>I think what mage has to offer is pretty nice, we could leveralge the whole
+Go ecosystem,</p>
+<p>There are some things worth mentioning:</p>
+<ul>
+<li>Of course the Go syntax does not prevent people from writing shell code:
+<ul>
+<li><a href="https://pkg.go.dev/github.com/magefile/mage/sh" rel="external" target="_blank">https://pkg.go.dev/github.com/magefile/mage/sh</a></li>
+<li>and shell code is not entirely evil, I still use make on the job, it is a pragmatic reality</li>
+</ul>
+</li>
+</ul>
+<div class="highlight wrap-code"><pre tabindex="0"><code class="language-bsh" data-lang="bsh">ssh-keygen -Y sign -n file -f ~/.ssh/id_ed25519_prvgk &lt; magefile.bin &gt; magefile.bin.sig
+
+ssh-keygen -Y check-novalidate -n file -f ~/.ssh/id_ed25519_prvgk.pub -s magefile.bin.sig &lt; magefile.bin
+
+https://www.agwa.name/blog/post/ssh_signatures</code></pre></div>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/index.html">
+MNP
+          </a>
+        </div>
+        <script>
+          window.index_js_url="/searchindex.en.js?1730650003";
+        </script>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+        <script>
+          var contentLangs=['en'];
+        </script>
+        <script src="/js/auto-complete.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.min.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.stemmer.support.min.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.multi.min.js?1730650003" defer></script>
+        <script src="/js/lunr/lunr.en.min.js?1730650003" defer></script>
+        <script src="/js/search.js?1730650003" defer></script>
+      </div>
+      <div id="R-homelinks" class="default-animation homelinks">
+        <ul>
+          <li><a class="padding" href="/index.html"><i class="fa-fw fas fa-home"></i> Home</a></li>
+        </ul>
+        <hr class="padding">
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div id="R-shortcutmenu-home" class="R-sidebarmenu">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="parent " data-nav-id="/computer-science/index.html"><a class="padding" href="/computer-science/index.html">Computer Science</a><ul id="R-subsections-a9dc21014f3a8893cc3a06c31ec21575" class="collapsible-menu">
+            <li class="active " data-nav-id="/computer-science/mage/index.html"><a class="padding" href="/computer-science/mage/index.html">Mage</a></li></ul></li>
+            <li class="" data-nav-id="/mathematics/index.html"><a class="padding" href="/mathematics/index.html">Mathematics</a><ul id="R-subsections-8597eafc40eb66ef3fae9d833373311e" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+    
+        <div class="padding footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter"></div>
+        <div id="R-menu-footer">
+          <hr class="padding default-animation footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter">
+          <div id="R-prefooter" class="footerLangSwitch footerVariantSwitch footerVisitedLinks">
+            <ul>
+              <li id="R-select-language-container" class="footerLangSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-language"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-language">Language</label>
+                    <select id="R-select-language" onchange="location = this.querySelector( this.value ).dataset.url;">
+                      <option id="R-select-language-en" value="#R-select-language-en" data-url="/computer-science/mage/index.html" lang="en-us" selected></option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+              <li id="R-select-variant-container" class="footerVariantSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-paint-brush"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-variant">Theme</label>
+                    <select id="R-select-variant" onchange="window.variants && variants.changeVariant( this.value );">
+                      <option id="R-select-variant-blue" value="blue" selected>Blue</option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <script>window.variants && variants.markSelectedVariant();</script>
+              </li>
+              <li class="footerVisitedLinks">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-history"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <button onclick="clearHistory();">Clear History</button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="R-footer" class="footerFooter showFooter">
+        <p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <script src="/js/clipboard.min.js?1730650003" defer></script>
+    <script src="/js/perfect-scrollbar.min.js?1730650003" defer></script>
+    <script src="/js/theme.js?1730650003" defer></script>
+  </body>
+</html>

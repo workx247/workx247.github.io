@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mathematics :: MNP</title>
+    <link>http://localhost:1313/mathematics/index.html</link>
+    <description>This section wil cover posts about mathematics; I love logic, set-theory, combinatorics, optimization.</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 03 Nov 2024 12:31:44 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/mathematics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Diagonalization Argument</title>
+      <link>http://localhost:1313/mathematics/diagonalization_argument/index.html</link>
+      <pubDate>Sun, 03 Nov 2024 12:31:44 +0100</pubDate>
+      <guid>http://localhost:1313/mathematics/diagonalization_argument/index.html</guid>
+      <description>Warning Article still under construction&#xA;How did I get here? Some 20 years ago, when I was an undergraduate (CS) student, I was pretty fond of theoretical computer science, but I also secretly joined fellow students in their math classes, which kind of pissed of my dad, but also lead me to pursue mathematics later (bachelors degree only…)&#xA;During that time I usually earned some extra money as a tutor for both theoretical CS and also mathematics.</description>
+    </item>
+  </channel>
+</rss>
