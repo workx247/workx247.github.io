@@ -3,7 +3,7 @@
   <channel>
     <title>Mage :: MNP</title>
     <link>http://localhost:1313/computer-science/mage/index.html</link>
-    <description>About The Golang community is rather conservative, most smaller projects just get along with go build, some larger projects including Kubernetes, Prometheus, Terraform and Vault stick with the good old Makefile. But, that being said, a new player gets some attention, Mage and I would like to introduce it here and give some reasons why I like it. I&#xA;also try to be fair and give some pros and cons for both Mage and Make tools, as I’m generally no fan of black-and-white pictures - but the article deals with Mage. What we show here is:</description>
+    <description>About The Golang community is rather conservative, most smaller projects just get along with go build, some larger projects including Kubernetes, Prometheus, Terraform and Vault stick with the good old Makefile. But, that being said, a new player gets some attention, Mage and I would like to introduce it here and give some reasons why I like it. I also try to be fair and give some pros and cons for both Mage and Make tools, as I’m generally no fan of black-and-white pictures - but the article deals with Mage. What we show here is:</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate></lastBuildDate>
