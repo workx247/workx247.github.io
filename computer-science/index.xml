@@ -6,8 +6,15 @@
     <description>This section wil cover posts about computer science, programming and devops.</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Oct 2024 10:56:25 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 23 Nov 2024 11:59:20 +0100</lastBuildDate>
     <atom:link href="http://localhost:1313/computer-science/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fold me, fast</title>
+      <link>http://localhost:1313/computer-science/fold_me_fast/index.html</link>
+      <pubDate>Sat, 23 Nov 2024 11:59:20 +0100</pubDate>
+      <guid>http://localhost:1313/computer-science/fold_me_fast/index.html</guid>
+      <description>The Task It is not quite uncommon to have some time series data with some jitter in it. You might call these measurement errors (e.g. ADC jitter), disturbing signals (e.g. electro-magnetic interference), or just “fluctuation” in case it is a long term “trend” you’re interested in.&#xA;There are many ways to cope with that:&#xA;smoothing splines: taken from the octave documentation Kalman filters Moving avergage \begin{gather} y[n] = \frac{1}{N} \sum_{k=0}^{N-1} x[n-k] \end{gather} The latter is a rather simple to approach, but it bears a typical students trap that comes with some computational penalty: The naive approach of just summing up the samples within the window, then dividing to get the average, and ‘slide’ the window one sample to the right is time-consuming, and there are better ways to do this.</description>
+    </item>
     <item>
       <title>Mage</title>
       <link>http://localhost:1313/computer-science/mage/index.html</link>

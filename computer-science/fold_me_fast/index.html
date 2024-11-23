@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.134.2">
+    <meta name="generator" content="Relearn 7.1.1">
+    <meta name="description" content="The Task It is not quite uncommon to have some time series data with some jitter in it. You might call these measurement errors (e.g. ADC jitter), disturbing signals (e.g. electro-magnetic interference), or just “fluctuation” in case it is a long term “trend” you’re interested in.
+There are many ways to cope with that:
+smoothing splines: taken from the octave documentation Kalman filters Moving avergage \begin{gather} y[n] = \frac{1}{N} \sum_{k=0}^{N-1} x[n-k] \end{gather} The latter is a rather simple to approach, but it bears a typical students trap that comes with some computational penalty: The naive approach of just summing up the samples within the window, then dividing to get the average, and ‘slide’ the window one sample to the right is time-consuming, and there are better ways to do this.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Fold me, fast :: MNP">
+    <meta name="twitter:description" content="The Task It is not quite uncommon to have some time series data with some jitter in it. You might call these measurement errors (e.g. ADC jitter), disturbing signals (e.g. electro-magnetic interference), or just “fluctuation” in case it is a long term “trend” you’re interested in.
+There are many ways to cope with that:
+smoothing splines: taken from the octave documentation Kalman filters Moving avergage \begin{gather} y[n] = \frac{1}{N} \sum_{k=0}^{N-1} x[n-k] \end{gather} The latter is a rather simple to approach, but it bears a typical students trap that comes with some computational penalty: The naive approach of just summing up the samples within the window, then dividing to get the average, and ‘slide’ the window one sample to the right is time-consuming, and there are better ways to do this.">
+    <meta property="og:url" content="http://localhost:1313/computer-science/fold_me_fast/index.html">
+    <meta property="og:site_name" content="MNP">
+    <meta property="og:title" content="Fold me, fast :: MNP">
+    <meta property="og:description" content="The Task It is not quite uncommon to have some time series data with some jitter in it. You might call these measurement errors (e.g. ADC jitter), disturbing signals (e.g. electro-magnetic interference), or just “fluctuation” in case it is a long term “trend” you’re interested in.
+There are many ways to cope with that:
+smoothing splines: taken from the octave documentation Kalman filters Moving avergage \begin{gather} y[n] = \frac{1}{N} \sum_{k=0}^{N-1} x[n-k] \end{gather} The latter is a rather simple to approach, but it bears a typical students trap that comes with some computational penalty: The naive approach of just summing up the samples within the window, then dividing to get the average, and ‘slide’ the window one sample to the right is time-consuming, and there are better ways to do this.">
+    <meta property="og:locale" content="en_us">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Computer Science">
+    <meta property="article:published_time" content="2024-11-23T11:59:20+01:00">
+    <meta property="article:modified_time" content="2024-11-23T11:59:20+01:00">
+    <meta itemprop="name" content="Fold me, fast :: MNP">
+    <meta itemprop="description" content="The Task It is not quite uncommon to have some time series data with some jitter in it. You might call these measurement errors (e.g. ADC jitter), disturbing signals (e.g. electro-magnetic interference), or just “fluctuation” in case it is a long term “trend” you’re interested in.
+There are many ways to cope with that:
+smoothing splines: taken from the octave documentation Kalman filters Moving avergage \begin{gather} y[n] = \frac{1}{N} \sum_{k=0}^{N-1} x[n-k] \end{gather} The latter is a rather simple to approach, but it bears a typical students trap that comes with some computational penalty: The naive approach of just summing up the samples within the window, then dividing to get the average, and ‘slide’ the window one sample to the right is time-consuming, and there are better ways to do this.">
+    <meta itemprop="datePublished" content="2024-11-23T11:59:20+01:00">
+    <meta itemprop="dateModified" content="2024-11-23T11:59:20+01:00">
+    <meta itemprop="wordCount" content="1773">
+    <title>Fold me, fast :: MNP</title>
+    <link href="/css/fontawesome-all.min.css?1732378394" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fontawesome-all.min.css?1732378394" rel="stylesheet"></noscript>
+    <link href="/css/nucleus.css?1732378394" rel="stylesheet">
+    <link href="/css/auto-complete.css?1732378394" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/auto-complete.css?1732378394" rel="stylesheet"></noscript>
+    <link href="/css/perfect-scrollbar.min.css?1732378394" rel="stylesheet">
+    <link href="/css/fonts.css?1732378394" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/css/fonts.css?1732378394" rel="stylesheet"></noscript>
+    <link href="/css/theme.css?1732378394" rel="stylesheet">
+    <link href="/css/theme-blue.css?1732378394" rel="stylesheet" id="R-variant-style">
+    <link href="/css/chroma-learn.css?1732378394" rel="stylesheet" id="R-variant-chroma-style">
+    <link href="/css/print.css?1732378394" rel="stylesheet" media="print">
+    <script src="/js/variant.js?1732378394"></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      // variant stuff
+      window.variants && variants.init( [ 'blue' ] );
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/computer-science/fold_me_fast/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+            <div class="topbar-button topbar-button-toc" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="Table of Contents (CTRL&#43;ALT&#43;t)"><i class="fa-fw fas fa-list-alt"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+<nav class="TableOfContents">
+  <ul>
+    <li><a href="#the-task">The Task</a></li>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#the-naïve-approach">The Naïve Approach</a></li>
+    <li><a href="#the-accumulator-approach">The Accumulator Approach</a></li>
+    <li><a href="#the-simple-accumulator-approach">The Simple Accumulator Approach</a>
+      <ul>
+        <li><a href="#accumulator-with-kahans-error-recovery">Accumulator with Kahans Error Recovery</a></li>
+      </ul>
+    </li>
+    <li><a href="#results">Results</a></li>
+  </ul>
+</nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/index.html"><span itemprop="name">Mathematics and Programming</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><a itemprop="item" href="/computer-science/index.html"><span itemprop="name">Computer Science</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li
+            itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement"><span itemprop="name">Fold me, fast</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-prev" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/computer-science/index.html" title="Computer Science (🡐)"><i class="fa-fw fas fa-chevron-left"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-next" data-content-empty="disable" data-width-s="show" data-width-m="show" data-width-l="show"><a class="topbar-control" href="/computer-science/mage/index.html" title="Mage (🡒)"><i class="fa-fw fas fa-chevron-right"></i></a>
+            </div>
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable computer-science" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="fold-me-fast">Fold me, fast</h1>
+
+<h2 id="the-task">The Task</h2>
+<p>It is not quite uncommon to have some time series data with some jitter
+in it. You might call these measurement errors (e.g. ADC jitter),
+disturbing signals (e.g. electro-magnetic interference), or just &ldquo;fluctuation&rdquo; in case
+it is a long term &ldquo;trend&rdquo; you&rsquo;re interested in.</p>
+<p>There are many ways to cope with that:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Smoothing_spline" rel="external" target="_blank">smoothing splines</a>: <br>
+taken from the <a href="https://octave.sourceforge.io/octave/function/splinefit.html" rel="external" target="_blank">octave documentation</a> <br>
+<a href="#R-image-a7b70500365f7a888956c5ca2bce59ae" class="lightbox-link"><img class="noborder lazy lightbox noshadow figure-image" loading="lazy" src="https://octave.sourceforge.io/octave/function/images/splinefit_101.png" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-a7b70500365f7a888956c5ca2bce59ae"><img class="noborder lazy lightbox noshadow lightbox-image" loading="lazy" src="https://octave.sourceforge.io/octave/function/images/splinefit_101.png"></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Kalman_filter" rel="external" target="_blank">Kalman filters</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Moving_average" rel="external" target="_blank">Moving avergage</a></li>
+</ul>
+<span class="math align-center">\begin{gather}
+y[n] = \frac{1}{N} \sum_{k=0}^{N-1} x[n-k]
+\end{gather}</span>
+<p>The latter is a rather simple to approach, but it bears a typical
+students trap that comes with some computational penalty:
+The naive approach of just summing up the
+samples within the window, then dividing to get the average, and &lsquo;slide&rsquo; the
+window one sample to the right is time-consuming, and there are better ways to
+do this.</p>
+<p>Having said that, the computationally faster implementations need some
+care as well.</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>If just a moving average is what fits your needs, using an accumulator instead
+of summing up the samples again and again is just fine and very fast. If you are
+worried about numerical problems, e.g.
+because the summation might go on and on for several billion samples with changing signs,
+you could
+<ul>
+<li>either decide to use an integer accumulator and add/subtract
+raw ADC values - this is viable if the raw ADC values are still available - and yields 100% accuracy,</li>
+<li>or use <a href="https://en.wikipedia.org/wiki/Kahan_summation_algorithm" rel="external" target="_blank">Kahans summation technique</a>
+on floats to recover the error. This technique might also be a mitigation for numerical errors
+on silicon that does not support 64-bit floating point operations (e.g. embedded systems),</li>
+<li>periodically recalculate the sum to avoid drift.</li>
+</ul>
+</li>
+<li>If you are interested in the general case, i.e. you want to apply a generic, possibly non-uniform,
+<a href="https://en.wikipedia.org/wiki/Window_function" rel="external" target="_blank">window function</a>
+to the signal, you might want to look
+into the <a href="https://en.wikipedia.org/wiki/Fast_Fourier_transform" rel="external" target="_blank">FFT</a> and
+<a href="https://en.wikipedia.org/wiki/Convolution#Fast_convolution_algorithms" rel="external" target="_blank">convolution</a> algorithms.
+The FFT runs in $O(N\,log(N))$, and the convolution could be computed
+with point-wise multiplication in frequency domain.</li>
+<li>You will probably find good libraries that give you an arbitrary-radix
+FFT in most mainstream programming languages, but just in case it is needed to
+do an implementation from scratch: A low-hanging fruit is to
+<ul>
+<li>first head for the <a href="https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm" rel="external" target="_blank">Cooley-Tukey algorithm</a>
+to achieve a radix-2 FFT,</li>
+<li>and then approach arbitrary-radix FFTs via the <a href="https://en.wikipedia.org/wiki/Chirp_Z-transform" rel="external" target="_blank">Bluestein algorithm</a>.</li>
+</ul>
+</li>
+<li>There are some aspects which we won&rsquo;t dive into:
+<ul>
+<li>Numerical analysis of expected errors using the FFT/convolution approach.</li>
+<li>Phase errors; there is a question as on how to properly align the averaged samples.
+Strictly speaking, it would be necessary to note that with an averaging window of
+11 samples you likely would be able to obtain your first &lsquo;valid&rsquo; result in time-domain
+at sample 6, that is:</li>
+</ul>
+</li>
+</ul>
+<span class="math align-center">\begin{gather}
+y[n] = \frac{1}{N} \sum_{k=n-\lfloor{}k/2\rfloor{}}^{n+\lfloor{}k/2\rfloor{}} x[k]
+\end{gather}</span>
+<h2 id="the-naïve-approach">The Naïve Approach</h2>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">naiveMovingAverage</span>(<span style="color:#a6e22e">data</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">windowSize</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">windowSize</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">windowSize</span> &gt; len(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">averages</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">data</span>)<span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;=</span> len(<span style="color:#a6e22e">data</span>)<span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">sum</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">sum</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#a6e22e">j</span>]
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">averages</span>[<span style="color:#a6e22e">i</span>] = float64(<span style="color:#a6e22e">sum</span>) <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">windowSize</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">averages</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>As we can see the two loops make up for $O(N\,K)$ operations, where
+$N$ is the number of samples in the input data, and $K$ is the window size.</p>
+<h2 id="the-accumulator-approach">The Accumulator Approach</h2>
+<p>We tried to avoid presenting our own FFT implementation here, as there are
+many out there, and it would just blow up the complexity of this article.
+Also: I would not encourage to re-implement an FFT from scratch if no
+exotic seupt requires just this.</p>
+<p>We used: <a href="https://github.com/maddyblue/go-dsp" rel="external" target="_blank">github.com/mjibson/go-dsp/fft</a>
+which, btw., also follows the <a href="https://github.com/maddyblue/go-dsp/blob/11479a337f1259210b7c8f93f7bf2b0cc87b066e/fft/fft.go" rel="external" target="_blank">Cooley-Tukey-Bluestein approach</a>:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">movingAverageConvolve</span>(<span style="color:#a6e22e">data</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">windowSize</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">windowSize</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">windowSize</span> &gt; len(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Define the moving average window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">window</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">complex128</span>, len(<span style="color:#a6e22e">data</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cdata</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">complex128</span>, len(<span style="color:#a6e22e">data</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">window</span>[len(<span style="color:#a6e22e">data</span>)<span style="color:#f92672">-</span><span style="color:#a6e22e">i</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] = complex(<span style="color:#ae81ff">1.0</span><span style="color:#f92672">/</span>float64(<span style="color:#a6e22e">windowSize</span>), <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">cdata</span>[<span style="color:#a6e22e">i</span>] = complex(<span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>], <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">data</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">cdata</span>[<span style="color:#a6e22e">i</span>] = complex(<span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>], <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fft</span>.<span style="color:#a6e22e">Convolve</span>(<span style="color:#a6e22e">cdata</span>, <span style="color:#a6e22e">window</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Convert the result to real values and shift for correct alignment
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">realResult</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">result</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">result</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">realResult</span>[(<span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">%</span>len(<span style="color:#a6e22e">result</span>)] = real(<span style="color:#a6e22e">result</span>[<span style="color:#a6e22e">i</span>])
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Trim the result to exclude padding from FFT (valid convolution)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">realResult</span>[:len(<span style="color:#a6e22e">data</span>)<span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>We will evaluate the performance of that approach in the final section, its
+dominance relies on the window size. In the code we see that the convolution
+demands some index tricks, i.e. reversing the window, and the result
+needs a shift for correct alignment. With one million samples and roughly
+10k window size the performance boost is roughly a factor of 5 - I think
+that still could be improved upon in several ways:</p>
+<ul>
+<li>I think it is possible to do this without complex arithmetic, i.e. use a discrete cosine
+transform (DCT) instead of the FFT, as the input is real-valued.</li>
+<li>The FFT library used here does just the aforementioned pragmatic / easy to implement trick
+to leverage the Bluestein-FFT on top of the Cooley-Tukey radix-2 FFT,
+in case the number of samples is not a power of 2.
+<ul>
+<li>This can be improved upon with FFTW, cuFFT etc.</li>
+</ul>
+</li>
+</ul>
+<p>Although the performance boost is not overwhelming, the convolution approach
+is more flexible, and can be used for much more general cases when the
+<a href="https://en.wikipedia.org/wiki/Window_function" rel="external" target="_blank">window function</a> is arbitrary.</p>
+<h2 id="the-simple-accumulator-approach">The Simple Accumulator Approach</h2>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">AccumulatorMovingAverage</span>(<span style="color:#a6e22e">data</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">windowSize</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">windowSize</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">windowSize</span> &gt; len(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result</span> = make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">data</span>)<span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span> <span style="color:#75715e">// Holds the current sum of the window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Initialize the first window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>]
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">result</span>[<span style="color:#ae81ff">0</span>] = <span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">windowSize</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Slide the window through the data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">data</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Subtract the value leaving the window and add the value entering the window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span>]
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Compute the average for the current window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">result</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] = <span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">windowSize</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>This approach is very simple, and very fast. If there are no worries about
+numerical stability, or if <strong>integer ADC values</strong> are available, <em>this is the
+simplest and fastest solution to the task</em>.</p>
+<p>The only worries I might be aware of in case of floating point samples
+are accumulating round-off-errors - but these could be mitigated with a
+Kahan summation technique or a periodic re-calculation and then
+(precision-)benchmarked against the naïve approach.</p>
+<h3 id="accumulator-with-kahans-error-recovery">Accumulator with Kahans Error Recovery</h3>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">KahanMovingAverage</span>(<span style="color:#a6e22e">data</span> []<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">windowSize</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">float64</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">windowSize</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">windowSize</span> &gt; len(<span style="color:#a6e22e">data</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result</span> = make([]<span style="color:#66d9ef">float64</span>, len(<span style="color:#a6e22e">data</span>)<span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span>  <span style="color:#75715e">// Holds the current sum of the window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">compensation</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.0</span> <span style="color:#75715e">// Kahan compensation for lost precision
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Initialize the first window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">compensation</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">compensation</span> = (<span style="color:#a6e22e">t</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">accumulator</span>) <span style="color:#f92672">-</span> <span style="color:#a6e22e">y</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">accumulator</span> = <span style="color:#a6e22e">t</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">result</span>[<span style="color:#ae81ff">0</span>] = <span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">windowSize</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Slide the window through the data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">windowSize</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">data</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Subtract the value leaving the window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">-</span><span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">compensation</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">compensation</span> = (<span style="color:#a6e22e">t</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">accumulator</span>) <span style="color:#f92672">-</span> <span style="color:#a6e22e">y</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">accumulator</span> = <span style="color:#a6e22e">t</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Add the value entering the window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">y</span> = <span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">compensation</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">t</span> = <span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">compensation</span> = (<span style="color:#a6e22e">t</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">accumulator</span>) <span style="color:#f92672">-</span> <span style="color:#a6e22e">y</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">accumulator</span> = <span style="color:#a6e22e">t</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">// Compute the average for the current window
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">result</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">-</span><span style="color:#a6e22e">windowSize</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] = <span style="color:#a6e22e">accumulator</span> <span style="color:#f92672">/</span> float64(<span style="color:#a6e22e">windowSize</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<h2 id="results">Results</h2>
+<p>We chose</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>	<span style="color:#a6e22e">sampleSize</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1_000_000</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">float64</span>, <span style="color:#a6e22e">sampleSize</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">sampleSize</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>] = float64(<span style="color:#a6e22e">i</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#75715e">// for simplicity reasons
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	}
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">windowSize</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">10001</span> <span style="color:#75715e">// avoid &#34;0.5-style&#34; results
+</span></span></span></code></pre></div>
+<p>and got the following results on a 4GHz Ryzen 5 CPU:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Time taken for naive approach:  7.315492521s
+</span></span><span style="display:flex;"><span>Moving average by naive summation - first 5 samples:  [5001 5002 5003 5004 5005]
+</span></span><span style="display:flex;"><span>Moving average by naive summation - last 5 samples:  [994995 994996 994997 994998 994999 995000]
+</span></span><span style="display:flex;"><span>--------------------
+</span></span><span style="display:flex;"><span>Time taken for fft approach:  1.452222336s
+</span></span><span style="display:flex;"><span>Moving averages by convolution - first 5 samples: :  [5000.999881542342 5001.999705137291 5002.999716104469 5003.999729782633 5004.9997446745765]
+</span></span><span style="display:flex;"><span>Moving averages by convolution - last 5 samples: :  [994994.9998554322 994995.9998804536 994996.9998385616 994997.9998366546 994998.9998474488 994999.9998630307]
+</span></span><span style="display:flex;"><span>--------------------
+</span></span><span style="display:flex;"><span>Time taken for accumulator approach:  2.926404ms
+</span></span><span style="display:flex;"><span>Moving averages by accumulator - first 5 samples: :  [5001 5002 5003 5004 5005]
+</span></span><span style="display:flex;"><span>Moving averages by accumulator - last 5 samples: :  [994995 994996 994997 994998 994999 995000]
+</span></span><span style="display:flex;"><span>--------------------
+</span></span><span style="display:flex;"><span>Time taken for accumulator approach with Kahan recovery:  7.520729ms
+</span></span><span style="display:flex;"><span>Moving averages by Kahan accumulator - first 5 samples: :  [5001 5002 5003 5004 5005]
+</span></span><span style="display:flex;"><span>Moving averages by Kahan accumulator - last 5 samples: :  [994995 994996 994997 994998 994999 995000]</span></span></code></pre></div>
+<p>We observe some minor numerical problems with the FFT approach, but
+with the set sample sizes a factor of five boost.</p>
+<p>To be fair, I guess because of the nature of the samples we chose for simplicity,
+we are actually never really leaving integer arithmetic here in the accumulators
+(mantissa and exponent make up for no real fractional number).</p>
+<p>We could check this with fragments like</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">isInteger</span>(<span style="color:#a6e22e">f</span> <span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">bool</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">f</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Trunc</span>(<span style="color:#a6e22e">f</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">isInteger</span>(<span style="color:#a6e22e">accumulator</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;accumulator is not an integer&#34;</span>)
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>And do a comparison with</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">data</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Sin</span>(float64(<span style="color:#a6e22e">i</span>) <span style="color:#f92672">/</span> <span style="color:#ae81ff">10000</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span></code></pre></div>
+<p>Just to give a glimpse of the numerics here: The last samples are most
+problematic for the accumulator based solution, and we see a two-decimal-digit
+edge here for Kahan recovery over the simple accumulator:</p>
+<div class="highlight wrap-code"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Time taken for naive approach:  7.384292112s
+</span></span><span style="display:flex;"><span>Moving average by naive summation - first 5 samples:  [0.4596937979182286 0.459777942004903 0.45986208149379804 0.45994621638407224 0.4600303466748843]
+</span></span><span style="display:flex;"><span>Moving average by naive summation - last 5 samples:  [-0.8227865748742728 -0.8227373364171561 -0.8226880897326658 -0.822638834821295 -0.8225895716835357 -0.8225403003198811]
+</span></span><span style="display:flex;"><span>--------------------
+</span></span><span style="display:flex;"><span>Time taken for fft approach:  1.452728596s
+</span></span><span style="display:flex;"><span>Moving averages by convolution - first 5 samples: :  [0.45969379786813874 0.4597779420491195 0.45986208162457526 0.45994621638007066 0.46003034675477156]
+</span></span><span style="display:flex;"><span>Moving averages by convolution - last 5 samples: :  [-0.8227865748577293 -0.8227373363776562 -0.822688089655593 -0.8226388348728317 -0.8225895717086071 -0.822540300302254]
+</span></span><span style="display:flex;"><span>--------------------
+</span></span><span style="display:flex;"><span>Time taken for accumulator approach:  2.242687ms
+</span></span><span style="display:flex;"><span>Moving averages by accumulator - first 5 samples: :  [0.4596937979182286 0.459777942004903 0.45986208149379804 0.45994621638407224 0.4600303466748843]
+</span></span><span style="display:flex;"><span>Moving averages by accumulator - last 5 samples: :  [-0.8227865748741857 -0.8227373364170689 -0.8226880897325789 -0.822638834821208 -0.8225895716834487 -0.8225403003197936]
+</span></span><span style="display:flex;"><span>--------------------
+</span></span><span style="display:flex;"><span>Time taken for accumulator approach with Kahan recovery:  7.242217ms
+</span></span><span style="display:flex;"><span>Moving averages by Kahan accumulator - first 5 samples: :  [0.45969379791822745 0.45977794200490185 0.4598620814937969 0.45994621638407107 0.46003034667488313]
+</span></span><span style="display:flex;"><span>Moving averages by Kahan accumulator - last 5 samples: :  [-0.8227865748742715 -0.8227373364171547 -0.8226880897326648 -0.8226388348212939 -0.8225895716835347 -0.8225403003198797]</span></span></code></pre></div>
+<p>We can clearly see how the accumulator approach outperforms the naïve and
+the FFT approach, by both quality and speed, the latter by orders of magnitude.</p>
+<p>That again brings me to my favourite message regarding practitioners and
+theorists:
+&ldquo;Vision without action is a dream; action without vision is a journey without direction.&rdquo;</p>
+<span class="math align-center">\begin{gather}
+\infty
+\end{gather}</span>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/index.html">
+MNP
+          </a>
+        </div>
+        <script>
+          window.index_js_url="/searchindex.en.js?1732378394";
+        </script>
+        <search><form action="/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+        <script>
+          var contentLangs=['en'];
+        </script>
+        <script src="/js/auto-complete.js?1732378394" defer></script>
+        <script src="/js/lunr/lunr.min.js?1732378394" defer></script>
+        <script src="/js/lunr/lunr.stemmer.support.min.js?1732378394" defer></script>
+        <script src="/js/lunr/lunr.multi.min.js?1732378394" defer></script>
+        <script src="/js/lunr/lunr.en.min.js?1732378394" defer></script>
+        <script src="/js/search.js?1732378394" defer></script>
+      </div>
+      <div id="R-homelinks" class="default-animation homelinks">
+        <ul>
+          <li><a class="padding" href="/index.html"><i class="fa-fw fas fa-home"></i> Home</a></li>
+        </ul>
+        <hr class="padding">
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div id="R-shortcutmenu-home" class="R-sidebarmenu">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="parent " data-nav-id="/computer-science/index.html"><a class="padding" href="/computer-science/index.html">Computer Science</a><ul id="R-subsections-a9dc21014f3a8893cc3a06c31ec21575" class="collapsible-menu">
+            <li class="active " data-nav-id="/computer-science/fold_me_fast/index.html"><a class="padding" href="/computer-science/fold_me_fast/index.html">Fold me, fast</a></li>
+            <li class="" data-nav-id="/computer-science/mage/index.html"><a class="padding" href="/computer-science/mage/index.html">Mage</a></li></ul></li>
+            <li class="" data-nav-id="/mathematics/index.html"><a class="padding" href="/mathematics/index.html">Mathematics</a><ul id="R-subsections-8597eafc40eb66ef3fae9d833373311e" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+    
+        <div class="padding footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter"></div>
+        <div id="R-menu-footer">
+          <hr class="padding default-animation footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter showFooter">
+          <div id="R-prefooter" class="footerLangSwitch footerVariantSwitch footerVisitedLinks">
+            <ul>
+              <li id="R-select-language-container" class="footerLangSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-language"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-language">Language</label>
+                    <select id="R-select-language" onchange="location = this.querySelector( this.value ).dataset.url;">
+                      <option id="R-select-language-en" value="#R-select-language-en" data-url="/computer-science/fold_me_fast/index.html" lang="en-us" selected></option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+              <li id="R-select-variant-container" class="footerVariantSwitch">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-paint-brush"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <label class="a11y-only" for="R-select-variant">Theme</label>
+                    <select id="R-select-variant" onchange="window.variants && variants.changeVariant( this.value );">
+                      <option id="R-select-variant-blue" value="blue" selected>Blue</option>
+                    </select>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <script>window.variants && variants.markSelectedVariant();</script>
+              </li>
+              <li class="footerVisitedLinks">
+                <div class="padding menu-control">
+                  <i class="fa-fw fas fa-history"></i>
+                  <span>&nbsp;</span>
+                  <div class="control-style">
+                    <button onclick="clearHistory();">Clear History</button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="R-footer" class="footerFooter showFooter">
+        <p>Built with <a href="https://github.com/McShelby/hugo-theme-relearn" title="love"><i class="fas fa-heart"></i></a> by <a href="https://gohugo.io/">Hugo</a></p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <script src="/js/clipboard.min.js?1732378394" defer></script>
+    <script src="/js/perfect-scrollbar.min.js?1732378394" defer></script>
+    <script>
+      function useMathJax( config ){
+        window.MathJax = Object.assign( window.MathJax || {}, {
+          tex: {
+            inlineMath:  [['\\(', '\\)'], ['$',  '$']],  
+            displayMath: [['\\[', '\\]'], ['$$', '$$']], 
+          },
+          options: {
+            enableMenu: false 
+          }
+        }, config );
+      }
+      useMathJax( JSON.parse("{}") );
+    </script>
+    <script id="MathJax-script" async src="/js/mathjax/tex-mml-chtml.js?1732378394"></script>
+    <script src="/js/theme.js?1732378394" defer></script>
+  </body>
+</html>
